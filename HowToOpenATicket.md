@@ -46,11 +46,53 @@ Each type needs slightly different content in the description beyond the general
 - Target release or timeframe (quarter, version), if known.
 - A rough scope description — child Stories/Tasks/Bugs will attach as they're created; you don't need to enumerate them all up front.
 
+**Example:**
+```
+Project:     PLATFORM
+Issue Type:  Epic
+Summary:     Add SSO support
+Priority:    P2
+Target:      Q4 2026 (v3.0)
+Labels:      auth, security
+
+Description:
+Enterprise customers are asking for SSO (SAML/OIDC) so their employees
+can log in with the company identity provider instead of a separate
+username/password. Scope includes: login UI changes, IdP integration,
+session handling, and admin configuration for connecting an IdP.
+
+Out of scope for this epic: SCIM user provisioning (tracked separately
+in PLATFORM-512 once this ships).
+```
+
 ### Story
 - "As a [user], I want [capability], so that [benefit]" framing.
 - Acceptance criteria as a checklist — what "done" looks like.
 - Linked to its parent Epic, if one exists.
 - Estimate is usually added later during [Backlog Refinement](AgileMeetings/BacklogRefinement.md), not required at creation.
+
+**Example:**
+```
+Project:     PLATFORM
+Issue Type:  Story
+Summary:     Add support for password reset via email
+Priority:    P2
+Epic Link:   PLATFORM-480 (Add SSO support)   ← or its own epic if unrelated
+Labels:      auth
+
+Description:
+As a user, I want to reset my password via email, so that I can
+regain access to my account without contacting support.
+
+Acceptance Criteria:
+- [ ] "Forgot password?" link on the login page sends a reset email
+      to the account's registered address.
+- [ ] The reset link expires after 1 hour.
+- [ ] Following an expired or already-used link shows a clear error
+      with an option to request a new one.
+- [ ] Successfully resetting the password invalidates all existing
+      sessions for that account.
+```
 
 ### Task
 - Clear technical description of what needs to be done and *why* it's needed.
