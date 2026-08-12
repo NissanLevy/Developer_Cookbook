@@ -164,6 +164,8 @@ This is optional — the underlying Git operations are identical either way, and
 
 ## 4. Releases
 
+> If you track releases in Jira via Fix Versions, see [JiraReleaseManagement.md](JiraReleaseManagement.md) for how to keep them aligned with the branch/tag steps below.
+
 1. When `develop` has accumulated enough for a release, cut a release branch:
    ```bash
    git checkout develop

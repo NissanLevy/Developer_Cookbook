@@ -99,12 +99,47 @@ Acceptance Criteria:
 - Linked to a parent Epic if it supports one; standalone is fine if it doesn't.
 
 ### Bug
-- **Steps to reproduce** — numbered, specific.
-- **Expected vs. actual behavior.**
-- **Environment** — which of develop/test/stage/prod, plus browser/OS/version if relevant.
-- **Severity/priority** set per [Prioritization.md](Prioritization.md).
-- Screenshots or logs attached wherever possible.
-- Linked to the affected Story/Epic if it's a regression in existing functionality.
+
+**Mandatory — a bug report without these gets bounced back, not triaged:**
+- **Steps to reproduce** — numbered, specific enough that someone who never saw the issue can follow them exactly.
+- **Expected behavior** — what should have happened.
+- **Actual behavior** — what happened instead.
+- **Environment** — which of develop/test/stage/prod, plus browser/OS/app version if relevant.
+- **Severity/priority** — set per [Prioritization.md](Prioritization.md); this is what determines whether it gets fixed today or next sprint.
+
+**Strongly recommended, include whenever available:**
+- Screenshots, screen recordings, or logs — a stack trace or console error saves the assignee from having to reproduce it just to see what you saw.
+- Link to the affected Story/Epic if this is a regression in existing functionality.
+- Frequency — does it happen every time, or intermittently? Intermittent bugs need this noted explicitly so they aren't closed as "couldn't reproduce."
+- Who's impacted and how many — one internal user hitting an edge case is a different bug than "all customers on checkout."
+
+**Example:**
+```
+Project:     PLATFORM
+Issue Type:  Bug
+Summary:     Login redirect loops when session token is expired
+Priority:    P1
+Environment: prod, Chrome 126 (also confirmed on Safari 17)
+Labels:      auth
+
+Description:
+Steps to reproduce:
+1. Log in and stay idle for longer than the session timeout (30 min).
+2. Click any link within the app.
+
+Expected behavior:
+Redirected once to the login page with a "session expired" message.
+
+Actual behavior:
+Page redirects to /login, which redirects back to the original page,
+which redirects to /login again — infinite loop, page never loads.
+
+Frequency: Happens every time once the session has expired.
+Impact: Affects any user whose session expires mid-use — high traffic,
+several support tickets already filed today.
+
+Logs: attached (auth-service redirect trace, timestamps 14:02–14:03 UTC)
+```
 
 ### Sub-task
 - Linked to exactly **one** parent Story/Task/Bug — sub-tasks don't stand alone.
