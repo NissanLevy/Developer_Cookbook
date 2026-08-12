@@ -43,6 +43,8 @@ Branch name pattern: **`main`**
 | Allow force pushes | ❌ Disabled |
 | Allow deletions | ❌ Disabled |
 
+> **Solo/small-team exception:** GitHub does not let a PR author approve their own PR, so with only one contributor holding write access, "no bypass, even for admins" blocks *everyone* from ever merging. Until there's a second reviewer, add repo admins to the ruleset's **bypass list** (Settings → Rules → Rulesets → Bypass list → add "Repository admin"), or with classic branch protection, uncheck "Do not allow bypassing the above settings." Remove the bypass once a second reviewer is available — the setting exists to make review actually mean something.
+
 ## 3. Protection Rules: `develop`
 
 Branch name pattern: **`develop`** — mirrors `main`, slightly relaxed on review count since this is the day-to-day integration branch, not production.
