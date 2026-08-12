@@ -8,6 +8,7 @@ A living reference of guidelines, best practices, and common recipes for develop
 - [GitHub Flow](GithubFlow.md) — **exception, not the default.** Trunk-based strategy for projects with no distinct "released version" (e.g. a purely internal, always-current dashboard).
 - [Branch Protection Rules](BranchProtectionRules.md) — implementation spec for DevOps: exact GitHub branch protection / merge / tag settings that enforce Git Flow, plus `gh` CLI snippets to script it across repos.
 - [Deployments Log](DEPLOYMENTS.md) — manual record of what version is currently live in each environment (develop/test/stage/prod).
+- [Jira Release Management](JiraReleaseManagement.md) — how to use Jira Fix Versions so they stay aligned with Git Flow's release branches and tags, including naming convention, partial releases, and hotfix versions.
 
 **Which branching strategy do I use?** Start with **Git Flow** unless your project deploys straight to a single, always-current runtime you control, ships continuously with no committee/batch approval step, and never needs to patch an old released version independently — if all three hold, use GitHub Flow instead. Most projects here should default to Git Flow.
 
