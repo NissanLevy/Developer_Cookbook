@@ -61,10 +61,18 @@ jobs:
             cat "$file" >> dist/combined.md
           done < dist/manifest.txt
 
+      - name: Compute version
+        run: |
+          # MAJOR.MINOR are bumped by hand here for a real milestone;
+          # PATCH auto-increments from the Actions run number, so every
+          # push gets a distinct, monotonically increasing version with
+          # no manual step.
+          echo "VERSION=1.0.${{ github.run_number }}" >> "$GITHUB_ENV"
+
       - name: Convert to PDF
         run: |
           pandoc dist/combined.md \
-            -o dist/DeveloperCookbook.pdf \
+            -o "dist/DeveloperCookbook_${VERSION}.pdf" \
             --toc --toc-depth=2 \
             --pdf-engine=xelatex \
             --metadata title="Developer Cookbook" \
@@ -75,15 +83,15 @@ jobs:
       - name: Upload as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: developer-cookbook-pdf
-          path: dist/DeveloperCookbook.pdf
+          name: developer-cookbook-pdf-${{ env.VERSION }}
+          path: dist/DeveloperCookbook_${{ env.VERSION }}.pdf
 
       - name: Publish to a rolling release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest-pdf
           name: "Developer Cookbook (latest PDF)"
-          body: "Auto-generated from master @ ${{ github.sha }}. Rebuilt on every push to master."
-          files: dist/DeveloperCookbook.pdf
+          body: "Auto-generated from master @ ${{ github.sha }} — version ${{ env.VERSION }}."
+          files: dist/DeveloperCookbook_${{ env.VERSION }}.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
