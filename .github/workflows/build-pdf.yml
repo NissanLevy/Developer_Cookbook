@@ -17,14 +17,15 @@ jobs:
       - name: Install Pandoc and XeLaTeX
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
+          sudo apt-get install -y \
             pandoc \
             texlive-latex-base \
             texlive-latex-recommended \
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-xetex \
-            fonts-dejavu-core
+            fonts-dejavu-core \
+            fonts-lmodern
 
       - name: Combine markdown files in reading order
         run: |
