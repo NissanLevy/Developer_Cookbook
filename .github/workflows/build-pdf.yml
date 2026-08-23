@@ -1,0 +1,76 @@
+name: Build Cookbook PDF
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Combine markdown files in reading order
+        run: |
+          mkdir -p dist
+          # Reading order mirrors _sidebar.md / README.md.
+          # Add new docs here (and to _sidebar.md) when they're created —
+          # this list isn't derived automatically.
+          cat > dist/manifest.txt <<'EOF'
+          README.md
+          GitFlow.md
+          GithubFlow.md
+          BranchProtectionRules.md
+          DEPLOYMENTS.md
+          JiraReleaseManagement.md
+          Jira.md
+          HowToOpenATicket.md
+          Prioritization.md
+          AgileMeetings/Overview.md
+          AgileMeetings/SprintPlanning.md
+          AgileMeetings/DailyStandup.md
+          AgileMeetings/BacklogRefinement.md
+          AgileMeetings/SprintReview.md
+          AgileMeetings/SprintRetrospective.md
+          AgileMeetings/DailyUpdateEmailTemplate.md
+          Estimation.md
+          DefinitionOfDone.md
+          EOF
+
+          : > dist/combined.md
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            printf '\n\n' >> dist/combined.md
+            cat "$file" >> dist/combined.md
+          done < dist/manifest.txt
+
+      - name: Convert to PDF
+        uses: docker://pandoc/latex:latest
+        with:
+          args: >-
+            dist/combined.md
+            -o dist/DeveloperCookbook.pdf
+            --toc
+            --toc-depth=2
+            --metadata title="Developer Cookbook"
+            -V geometry:margin=1in
+
+      - name: Upload as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: developer-cookbook-pdf
+          path: dist/DeveloperCookbook.pdf
+
+      - name: Publish to a rolling release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest-pdf
+          name: "Developer Cookbook (latest PDF)"
+          body: "Auto-generated from master @ ${{ github.sha }}. Rebuilt on every push to master."
+          files: dist/DeveloperCookbook.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

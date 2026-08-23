@@ -30,5 +30,11 @@ A living reference of guidelines, best practices, and common recipes for develop
 - **A standalone topic** (e.g. code style, testing) → new root-level `TopicName.md`, linked from the relevant section above.
 - **A family of related docs** (e.g. the five Agile ceremonies) → its own subfolder with an `Overview.md` indexing the rest, linked from README as one entry.
 - Always add a link back here — an undiscoverable doc doesn't help anyone.
+- Also add it to `_sidebar.md` (site navigation) and to the manifest list in `.github/workflows/build-pdf.yml` (PDF export) — neither is generated automatically from this file.
 
 More topics will be added over time (e.g. code review, testing, CI/CD, code style).
+
+## Other Formats
+
+- **Live site:** published via GitHub Pages — see repo Settings → Pages for the URL.
+- **PDF:** auto-rebuilt on every push to `master`, published to the [`latest-pdf` release](../../releases/tag/latest-pdf).
