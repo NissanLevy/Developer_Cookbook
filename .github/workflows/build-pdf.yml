@@ -14,6 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Pandoc and XeLaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pandoc texlive-xetex texlive-fonts-recommended fonts-dejavu-core
+
       - name: Combine markdown files in reading order
         run: |
           mkdir -p dist
@@ -49,15 +55,15 @@ jobs:
           done < dist/manifest.txt
 
       - name: Convert to PDF
-        uses: docker://pandoc/latex:latest
-        with:
-          args: >-
-            dist/combined.md
-            -o dist/DeveloperCookbook.pdf
-            --toc
-            --toc-depth=2
-            --metadata title="Developer Cookbook"
-            -V geometry:margin=1in
+        run: |
+          pandoc dist/combined.md \
+            -o dist/DeveloperCookbook.pdf \
+            --toc --toc-depth=2 \
+            --pdf-engine=xelatex \
+            --metadata title="Developer Cookbook" \
+            -V geometry:margin=1in \
+            -V mainfont="DejaVu Sans" \
+            -V monofont="DejaVu Sans Mono"
 
       - name: Upload as workflow artifact
         uses: actions/upload-artifact@v4
